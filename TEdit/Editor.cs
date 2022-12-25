@@ -64,12 +64,31 @@ namespace TEdit
                 {
                     _CursorY++;
                 }
-                #endregion
+				#endregion
+				needsredraw = IsOnEdge(_CursorX,_CursorY,_OldCurX,_OldCurY);
                 if (key == ConsoleKey.Spacebar && _CursorY != 4095)
 				{
                     content[_CursorX, _CursorY] = ' ';
-                    _CursorY++;
-					needsredraw = true;
+					_CursorY++;
+				}
+                if (key == ConsoleKey.Backspace && _CursorY != 0)
+                {
+                    _CursorY--;
+                    content[_CursorX, _CursorY] = ' ';
+                }
+                if (key == ConsoleKey.Enter && _CursorX != 4096)
+                {
+                    _CursorY = 0;
+					_CursorX++;
+                }
+				if (key == ConsoleKey.Home)
+				{
+					_CursorY = 0;
+					_CursorX = 0;
+				}
+				if (key == ConsoleKey.Escape)
+				{
+
 				}
                 if (key == ConsoleKey.F5)
 				{
@@ -79,7 +98,7 @@ namespace TEdit
 				{
 					content[_CursorX,_CursorY] = keyi.KeyChar;
 					_CursorY++;
-					ResetWindow();
+					//ResetWindow();
 				}
 			}
 		}
@@ -177,11 +196,13 @@ namespace TEdit
 			WriteText(_CursorX, 0);
 			DrawCursor();
 		}
-		private static bool IsOnEdge(int x, int y)
+		private static bool IsOnEdge(int x, int y, int ox, int oy)
 		{
-
-
-			return true;
+			if (x == 0 && ox == 23 || y == 0 && oy == 23)
+            {
+				return true;
+			}
+            return false;
 		}
 		#endregion
 	}
